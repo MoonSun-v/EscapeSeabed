@@ -13,6 +13,8 @@ public class PlayerController: MonoBehaviour
 
     private Rigidbody2D rb;
     private Collider2D col;
+    private Animator animator;
+    private SpriteRenderer sr;
 
     private Vector2 movement;
 
@@ -22,6 +24,8 @@ public class PlayerController: MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
+        animator = GetComponent<Animator>();
+        sr = GetComponent<SpriteRenderer>();
 
         // [ 카메라 경계 계산 ]
         Vector3 min = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0)); // 왼쪽 아래
@@ -34,16 +38,21 @@ public class PlayerController: MonoBehaviour
     {
         movement.x = Input.GetAxisRaw("Horizontal"); // ←, →
 
+        // [ 점프 가능 여부 디버그용 ]
         bool isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-
-        // 디버그용 표시 
         Debug.DrawRay(groundCheck.position, Vector2.down * groundCheckRadius, isGrounded ? Color.green : Color.red);
 
+        // [ 좌우 반전 ]
+        if (movement.x != 0) sr.flipX = movement.x < 0;
+
+        // [ 점프 ]
         if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
         {
+            animator.SetTrigger("JumpTrigger");
             rb.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
         }
 
+        
     }
 
     void FixedUpdate()
@@ -55,5 +64,12 @@ public class PlayerController: MonoBehaviour
         clampedPosition.x = Mathf.Clamp(clampedPosition.x, minX, maxX);
         transform.position = clampedPosition;
     }
-
+    void OnDrawGizmosSelected()
+    {
+        if (groundCheck != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        }
+    }
 }
