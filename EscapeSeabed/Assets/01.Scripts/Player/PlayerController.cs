@@ -34,11 +34,12 @@ public class PlayerController: MonoBehaviour
         maxX = max.x - col.bounds.extents.x;
     }
 
+
     void Update()
     {
         movement.x = Input.GetAxisRaw("Horizontal"); // ←, →
 
-        // [ 점프 가능 여부 디버그용 ]
+        // [ 점프 가능 여부 디버그용 ] : 추후 삭제 예정 
         bool isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
         Debug.DrawRay(groundCheck.position, Vector2.down * groundCheckRadius, isGrounded ? Color.green : Color.red);
 
@@ -61,11 +62,12 @@ public class PlayerController: MonoBehaviour
         animator.SetBool("isIdle", isIdle); 
     }
 
+
     void FixedUpdate()
     {
         rb.velocity = new Vector2(movement.x * moveSpeed, rb.velocity.y);  // 좌우 이동 
 
-        // 경계 체크 (카메라 밖으로 나가지 못하게)
+        // [ 화면 경계 ]
         Vector3 clampedPosition = transform.position;
         clampedPosition.x = Mathf.Clamp(clampedPosition.x, minX, maxX);
         transform.position = clampedPosition;
