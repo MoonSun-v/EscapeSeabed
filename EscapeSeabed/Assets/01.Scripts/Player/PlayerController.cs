@@ -6,7 +6,7 @@ public class PlayerController: MonoBehaviour
 {
     private float moveSpeed = 4f;
     private float jumpForce = 15f;
-    public float groundCheckRadius = 0.1f;
+    public float groundCheckRadius = 0.2f;
     public LayerMask groundLayer; // 바닥 판정용 레이어
 
     [SerializeField] private Transform groundCheck;
@@ -48,11 +48,17 @@ public class PlayerController: MonoBehaviour
         // [ 점프 ]
         if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
         {
-            animator.SetTrigger("JumpTrigger");
             rb.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
         }
 
-        
+        // [ 애니메이션 파라미터 ]
+        bool isJumping = !isGrounded;
+        bool isRunning = Mathf.Abs(movement.x) > 0.01f && isGrounded;
+        bool isIdle = isGrounded && Mathf.Abs(movement.x) <= 0.01f;
+
+        animator.SetBool("isJumping", isJumping);
+        animator.SetBool("isRunning", isRunning);
+        animator.SetBool("isIdle", isIdle); 
     }
 
     void FixedUpdate()
@@ -64,12 +70,5 @@ public class PlayerController: MonoBehaviour
         clampedPosition.x = Mathf.Clamp(clampedPosition.x, minX, maxX);
         transform.position = clampedPosition;
     }
-    void OnDrawGizmosSelected()
-    {
-        if (groundCheck != null)
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-        }
-    }
+
 }
