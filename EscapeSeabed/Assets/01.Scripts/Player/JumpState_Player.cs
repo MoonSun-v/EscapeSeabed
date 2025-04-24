@@ -14,9 +14,16 @@ public class JumpState_Player : IState_Player
 
     public void Enter()
     {
+        Debug.Log("JumpState");
         player.SetActiveState("isJumping");
         player.Jump();
         elapsedTime = 0f;
+    }
+
+    public void HandleInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+            player.ChangeState(new ShootState_Player(player));
     }
 
     public void Update()
@@ -28,6 +35,7 @@ public class JumpState_Player : IState_Player
         {
             player.ChangeState(new IdleState_Player(player));
         }
+
     }
 
     public void Exit() 

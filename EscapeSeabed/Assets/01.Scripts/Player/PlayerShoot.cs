@@ -10,11 +10,6 @@ public class PlayerShoot : MonoBehaviour
 
     void Update()
     {
-        // [ 총 발사 ]
-        // 플레이어 애니메이션 !! 
-        // jump 혹은 idle 중이면 isShooting bool파라미터 true
-        // run 중이면 isSootingRun bool파라미터 true
-        // 
         if (Input.GetKeyDown(KeyCode.Space))
         {
             // 프리팹으로부터 새로운 미사일 게임 오브젝트 생성
