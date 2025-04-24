@@ -3,7 +3,6 @@ using UnityEngine;
 public class PlayerFSM : MonoBehaviour
 {
     private IState_Player currentState;
-    // private JumpState_Player jumpState;
 
     [Header("Components")]
     private Rigidbody2D rb;
@@ -13,6 +12,7 @@ public class PlayerFSM : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed = 5f;
     public float jumpForce = 12f;
+    public float fallForce = 8f;
     public Transform groundCheck;
     public float groundCheckRadius = 0.1f;
     public LayerMask groundLayer;
@@ -26,6 +26,7 @@ public class PlayerFSM : MonoBehaviour
 
     private float moveX = 0f; // 좌우 
     private float minX, maxX; // 카메라 경계
+    private float wall_distance = 0.4f;
 
 
     void Start()
@@ -58,20 +59,13 @@ public class PlayerFSM : MonoBehaviour
             transform.localScale = scale;
         }
 
-        
     }
 
     void FixedUpdate()
     {
-        if (IsTouchingWall() && !IsGrounded())
-        {
-            rb.velocity = new Vector2(0, rb.velocity.y);
-        }
-        else
-        {
-            // [ 좌우 이동 ]
-            rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
-        }
+        if (IsTouchingWall() && !IsGrounded()) { rb.velocity = new Vector2(0, rb.velocity.y); } // [ 공중에서 벽 충돌 ]
+        else { rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y); }// [ 좌우 이동 ]
+
             
         // [ 화면 경계 ]
         Vector3 clampedPosition = transform.position;
@@ -106,7 +100,7 @@ public class PlayerFSM : MonoBehaviour
 
     public void Fall()
     {
-        rb.velocity = new Vector2(rb.velocity.x, -jumpForce);
+        rb.velocity = new Vector2(rb.velocity.x, -fallForce);
     }
 
     public void Shoot()
@@ -132,20 +126,44 @@ public class PlayerFSM : MonoBehaviour
     }
 
 
-    // [ 땅 충돌 체크 시각화 ] 
+    // [ 충돌 시각화 ] 
     void OnDrawGizmos()
     {
+        // 땅 
         if (groundCheck != null)
         {
-            if(IsGrounded()) Gizmos.color = Color.green;
-            else Gizmos.color = Color.red;
-
+            Gizmos.color = IsGrounded() ? Color.green : Color.red;
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        }
+
+        // 벽
+        if (Application.isPlaying)
+        {
+            Vector2 direction = Vector2.right * Mathf.Sign(transform.localScale.x);
+
+            Vector2 originLower = new Vector2(transform.position.x, transform.position.y - 0.57f);
+            Vector2 originUpper = new Vector2(transform.position.x, transform.position.y + 0.4f);
+
+            Gizmos.color = IsTouchingWall() ? Color.cyan : Color.yellow;
+
+            Gizmos.DrawLine(originLower, originLower + direction * wall_distance);
+            Gizmos.DrawLine(originUpper, originUpper + direction * wall_distance);
         }
     }
 
+    // [ 벽 부딪힘 체크 ]
     public bool IsTouchingWall()
     {
-        return Physics2D.Raycast(transform.position, Vector2.right * Mathf.Sign(transform.localScale.x), 0.2f, groundLayer);
+        Vector2 direction = Vector2.right * Mathf.Sign(transform.localScale.x);
+
+        // 레이 시작 위치들 (몸통 위/아래)
+        Vector2 originLower = new Vector2(transform.position.x, transform.position.y - 0.57f);
+        Vector2 originUpper = new Vector2(transform.position.x, transform.position.y + 0.4f);
+
+        // 둘 중 하나라도 벽에 닿으면 true
+        bool hitLower = Physics2D.Raycast(originLower, direction, wall_distance, groundLayer);
+        bool hitUpper = Physics2D.Raycast(originUpper, direction, wall_distance, groundLayer);
+
+        return hitLower || hitUpper;
     }
 }
