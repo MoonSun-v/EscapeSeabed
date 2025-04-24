@@ -18,10 +18,10 @@ public class PlayerFSM : MonoBehaviour
 
     [Header("Shooting")]
     public GameObject BulletPrefab;
-    public float launchSpeed = 10.0f;
+    public float launchSpeed = 15.0f;
 
-    [Header("StateSetting")] // Enum으로 변경 할말 ? 
-    private string[] stateParams = { "isIdle", "isRunning", "isJumping", "isShooting" };
+    [Header("AnimationTrigger")] // Enum으로 변경 할말 ? 
+    private string[] stateParams = { "isIdle", "isRunning", "isJumping", "isShooting", "isRunShooting" };
 
     private float moveX = 0f; // 좌우 
     private float minX, maxX; // 카메라 경계
@@ -81,11 +81,6 @@ public class PlayerFSM : MonoBehaviour
         {
             animator.SetBool(param, param == activeParam);
         }
-    }
-
-    public void SetTrigger(string name)
-    {
-        animator.SetTrigger(name);
     }
 
     public bool IsGrounded()

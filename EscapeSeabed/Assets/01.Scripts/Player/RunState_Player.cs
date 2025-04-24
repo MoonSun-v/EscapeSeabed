@@ -18,7 +18,7 @@ public class RunState_Player : IState_Player
     public void HandleInput()
     {
         if (Input.GetKeyDown(KeyCode.Space))
-            player.ChangeState(new ShootState_Player(player));
+            player.ChangeState(new RunShootState_Player(player));
 
         if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 0)
             player.ChangeState(new IdleState_Player(player));

@@ -1,11 +1,11 @@
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class JumpState_Player : IState_Player
 {
     private PlayerFSM player;
-    private float coyoteTime = 0.01f; // 점프 후 이 시간동안 바닥 감지 무시
+    private float coyoteTime = 0.01f; // 점프 후 해당 시간동안 바닥 감지 무시
     private float elapsedTime;
+    private bool canDoubleJump;  
 
     public JumpState_Player(PlayerFSM player)
     {
@@ -17,11 +17,28 @@ public class JumpState_Player : IState_Player
         Debug.Log("JumpState");
         player.SetActiveState("isJumping");
         player.Jump();
+        canDoubleJump = true;  
         elapsedTime = 0f;
     }
 
     public void HandleInput()
     {
+        bool jumpPressed = Input.GetKey(KeyCode.UpArrow);
+        bool jumpJustPressed = Input.GetKeyDown(KeyCode.UpArrow);
+
+        // [ 더블 점프 ]
+        if (jumpJustPressed && !player.IsGrounded() && canDoubleJump)
+        {
+            player.Jump();
+            canDoubleJump = false;
+        }
+
+        // [ 연속 점프 ]
+        if (jumpPressed && player.IsGrounded() && elapsedTime >= coyoteTime)
+        {
+            player.ChangeState(new JumpState_Player(player));
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
             player.ChangeState(new ShootState_Player(player));
     }
@@ -30,12 +47,10 @@ public class JumpState_Player : IState_Player
     {
         elapsedTime += Time.deltaTime;
 
-        // 쿨타임 이후 바닥에 닿고 하강 중일 때만 Idle로 전환
-        if (elapsedTime >= coyoteTime && player.IsGrounded() && player.GetVelocity().y <= 0.01f)
+        if (player.IsGrounded() && player.GetVelocity().y <= 0.01f && elapsedTime >= coyoteTime)
         {
             player.ChangeState(new IdleState_Player(player));
         }
-
     }
 
     public void Exit() 

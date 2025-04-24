@@ -20,6 +20,9 @@ public class IdleState_Player : IState_Player
         if (Input.GetKeyDown(KeyCode.Space))
             player.ChangeState(new ShootState_Player(player));
 
+        if (Input.GetKeyDown(KeyCode.Space) && (Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0))
+            player.ChangeState(new RunShootState_Player(player));
+
         if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0)
             player.ChangeState(new RunState_Player(player));
 
