@@ -12,7 +12,6 @@ public class RunState_Player : IState_Player
 
     public void Enter()
     {
-        Debug.Log("RunSate¿« Enter");
         player.SetActiveState("isRunning");
     }
 

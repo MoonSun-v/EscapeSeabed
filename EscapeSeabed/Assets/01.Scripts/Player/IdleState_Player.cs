@@ -11,7 +11,6 @@ public class IdleState_Player : IState_Player
 
     public void Enter()
     {
-        Debug.Log("Idle¿« Enter");
         player.SetActiveState("isIdle");
     }
 

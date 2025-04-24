@@ -18,6 +18,8 @@ public class PlayerFSM : MonoBehaviour
     [Header("AnimationSetting")]
     private string[] stateParams = { "isIdle", "isRunning", "isJumping" };
 
+    private float moveX = 0f;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -30,11 +32,9 @@ public class PlayerFSM : MonoBehaviour
     {
         currentState?.Update();
 
-        // 이동 처리
-        float moveX = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
-
-        // 좌우 반전
+        moveX = Input.GetAxisRaw("Horizontal");
+        
+        // [ 좌우 반전 ]
         if (moveX != 0)
         {
             Vector3 scale = transform.localScale;
@@ -44,6 +44,12 @@ public class PlayerFSM : MonoBehaviour
 
     }
 
+    void FixedUpdate()
+    {
+        // [ 좌우 이동 ]
+        rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
+    }
+
     public void ChangeState(IState_Player newState)
     {
         currentState?.Exit();
@@ -51,12 +57,14 @@ public class PlayerFSM : MonoBehaviour
         currentState.Enter();
     }
 
-    /*
-    public void SetBool(string name, bool value)
+    public void SetActiveState(string activeParam)
     {
-        animator.SetBool(name, value);
+        foreach (var param in stateParams)
+        {
+            animator.SetBool(param, param == activeParam);
+        }
     }
-    */
+
     public void SetTrigger(string name)
     {
         animator.SetTrigger(name);
@@ -72,25 +80,20 @@ public class PlayerFSM : MonoBehaviour
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
     }
 
-    void OnDrawGizmosSelected()
-    {
-        if (groundCheck != null)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-        }
-    }
-
-    public void SetActiveState(string activeParam)
-    {
-        foreach (var param in stateParams)
-        {
-            animator.SetBool(param, param == activeParam);
-        }
-    }
-
     public Vector2 GetVelocity()
     {
         return rb.velocity;
+    }
+
+    // [ 땅 충돌 체크 시각화 ] 
+    void OnDrawGizmos()
+    {
+        if (groundCheck != null)
+        {
+            if(IsGrounded()) Gizmos.color = Color.green;
+            else Gizmos.color = Color.red;
+
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        }
     }
 }

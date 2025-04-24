@@ -14,7 +14,6 @@ public class JumpState_Player : IState_Player
 
     public void Enter()
     {
-        Debug.Log("JumpSate¿« Enter");
         player.SetActiveState("isJumping");
         player.Jump();
         elapsedTime = 0f;
