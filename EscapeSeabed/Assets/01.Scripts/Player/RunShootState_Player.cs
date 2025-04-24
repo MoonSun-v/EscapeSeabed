@@ -13,7 +13,7 @@ public class RunShootState_Player : IState_Player
     public void Enter()
     {
         Debug.Log("RunShootState");
-        player.SetActiveState("isRunShooting");
+        player.SetActiveState(PlayerFSM.PlayerState.RunShooting);
         player.Shoot();
     }
 

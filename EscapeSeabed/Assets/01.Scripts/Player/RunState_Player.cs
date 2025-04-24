@@ -12,7 +12,7 @@ public class RunState_Player : IState_Player
     public void Enter()
     {
         Debug.Log("RunState");
-        player.SetActiveState("isRunning");
+        player.SetActiveState(PlayerFSM.PlayerState.Running);
     }
 
     public void HandleInput()

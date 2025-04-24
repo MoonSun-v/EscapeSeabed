@@ -21,13 +21,11 @@ public class PlayerFSM : MonoBehaviour
     public GameObject BulletPrefab;
     public float launchSpeed = 15.0f;
 
-    [Header("AnimationTrigger")] // Enum으로 변경 할말 ? 
-    private string[] stateParams = { "isIdle", "isRunning", "isJumping", "isShooting", "isRunShooting" };
-
     private float moveX = 0f; // 좌우 
     private float minX, maxX; // 카메라 경계
     private float wall_distance = 0.4f;
 
+    public enum PlayerState { Idle, Running, Jumping, Shooting, RunShooting }
 
     void Start()
     {
@@ -58,7 +56,6 @@ public class PlayerFSM : MonoBehaviour
             scale.x = Mathf.Abs(scale.x) * Mathf.Sign(moveX);
             transform.localScale = scale;
         }
-
     }
 
     void FixedUpdate()
@@ -80,11 +77,11 @@ public class PlayerFSM : MonoBehaviour
         currentState.Enter();
     }
 
-    public void SetActiveState(string activeParam)
+    public void SetActiveState(PlayerState activeParam)
     {
-        foreach (var param in stateParams)
+        foreach (var param in System.Enum.GetValues(typeof(PlayerState)))
         {
-            animator.SetBool(param, param == activeParam);
+            animator.SetBool(param.ToString(), param.Equals(activeParam));
         }
     }
 

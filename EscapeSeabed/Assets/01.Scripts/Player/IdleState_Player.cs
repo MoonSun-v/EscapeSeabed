@@ -12,7 +12,7 @@ public class IdleState_Player : IState_Player
     public void Enter()
     {
         Debug.Log("IdleState");
-        player.SetActiveState("isIdle");
+        player.SetActiveState(PlayerFSM.PlayerState.Idle);
     }
 
     public void HandleInput()
