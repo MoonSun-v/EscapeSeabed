@@ -5,7 +5,7 @@ public class PlayerFSM : MonoBehaviour
     private IState_Player currentState;
 
     [Header("Components")]
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
     private Animator animator;
     private Collider2D col;
 
@@ -25,7 +25,7 @@ public class PlayerFSM : MonoBehaviour
     private float minX, maxX; // 카메라 경계
     private float wall_distance = 0.4f;
 
-    public enum PlayerState { Idle, Running, Jumping, Shooting, RunShooting }
+    public enum PlayerState { Idle, Running, Jumping, Shooting, RunShooting, Hurt }
 
     void Start()
     {
@@ -123,6 +123,12 @@ public class PlayerFSM : MonoBehaviour
         return rb.velocity;
     }
 
+    public Rigidbody2D GetRigidbody()
+    {
+        return rb;
+    }
+
+    public Vector2 LastHitPosition { get; set; }
 
     // [ 충돌 시각화 ] 
     void OnDrawGizmos()
@@ -164,4 +170,14 @@ public class PlayerFSM : MonoBehaviour
 
         return hitLower || hitUpper;
     }
+
+    // [ 충돌 체크 ]
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Monster"))
+        {
+            ChangeState(new HurtState_Player(this));
+        }
+    }
+
 }

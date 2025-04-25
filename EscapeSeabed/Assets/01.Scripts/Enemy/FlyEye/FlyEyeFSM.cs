@@ -1,9 +1,10 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class SkeletonFSM : MonoBehaviour
+public class FlyEyeFSM : MonoBehaviour
 {
-    private IState_Enemy currentState;
+    private IState_FlyEye currentState;
 
     [Header("Components")]
     public Rigidbody2D rb;
@@ -11,10 +12,10 @@ public class SkeletonFSM : MonoBehaviour
     public Collider2D col;
 
     [Header("Movement")]
-    public float moveSpeed = 0.5f;
+    public float moveSpeed = 0.6f;
     public float lastFlipXPos;
 
-    public enum SkeletonState { Idle, Walking, Hurt }
+    public enum FlyEyeState { Fly, Hurt }
 
     void Start()
     {
@@ -24,10 +25,9 @@ public class SkeletonFSM : MonoBehaviour
 
         lastFlipXPos = transform.position.x;
 
-        ChangeState(new IdleState_Skeleton(this));
+        ChangeState(new FlyState_FlyEye(this));
     }
 
-    
     void Update()
     {
         currentState?.Update();
@@ -38,18 +38,31 @@ public class SkeletonFSM : MonoBehaviour
         currentState?.FixedUpdate();
     }
 
-    // [ 이동한 거리 계산 ] 
+    public void ChangeState(IState_FlyEye newState)
+    {
+        currentState?.Exit();
+        currentState = newState;
+        currentState.Enter();
+    }
+
+    public void SetActiveState(FlyEyeState activeParam)
+    {
+        foreach (var param in System.Enum.GetValues(typeof(FlyEyeState)))
+        {
+            animator.SetBool(param.ToString(), param.Equals(activeParam));
+        }
+    }
+
     public float DistanceMove()
     {
         return Mathf.Abs(transform.position.x - lastFlipXPos);
     }
 
-    
+
     public void Move()
     {
         rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
     }
-    
 
     public void StopMoving()
     {
@@ -61,26 +74,11 @@ public class SkeletonFSM : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void ChangeState(IState_Enemy newState)
-    {
-        currentState?.Exit();
-        currentState = newState;
-        currentState.Enter();
-    }
-
-    public void SetActiveState(SkeletonState activeParam)
-    {
-        foreach (var param in System.Enum.GetValues(typeof(SkeletonState)))
-        {
-            animator.SetBool(param.ToString(), param.Equals(activeParam));
-        }
-    }
-
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Bullet"))
         {
-            ChangeState(new HurtState_Skeleton(this));
+            ChangeState(new HurtState_FlyEye(this));
         }
     }
 }
