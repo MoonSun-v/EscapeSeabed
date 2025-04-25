@@ -5,8 +5,8 @@ using UnityEngine;
 public class FlyState_FlyEye : IState_FlyEye
 {
     private FlyEyeFSM flyeye;
+
     public float moveDistanceThreshold = 4.0f; // 이동 거리 임계치  
-    // private float timer = 0f;
 
     public FlyState_FlyEye(FlyEyeFSM flyeye)
     {
@@ -16,7 +16,6 @@ public class FlyState_FlyEye : IState_FlyEye
     public void Enter()
     {
         Debug.Log("FlyEye_Fly");
-        // timer = 0f;
         flyeye.SetActiveState(FlyEyeFSM.FlyEyeState.Fly);
     }
 
