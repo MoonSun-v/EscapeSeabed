@@ -14,7 +14,7 @@ public class ShootState_Player : IState_Player
 
     public void Enter()
     {
-        Debug.Log("ShootState");
+        // Debug.Log("ShootState");
         player.SetActiveState(PlayerFSM.PlayerState.Shooting);
         player.Shoot();
     }

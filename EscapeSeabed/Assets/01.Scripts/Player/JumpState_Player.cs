@@ -15,7 +15,7 @@ public class JumpState_Player : IState_Player
 
     public void Enter()
     {
-        Debug.Log("JumpState");
+        // Debug.Log("JumpState");
         player.SetActiveState(PlayerFSM.PlayerState.Jumping);
         player.Jump();
         canDoubleJump = true;  

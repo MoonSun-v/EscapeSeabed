@@ -11,7 +11,7 @@ public class RunState_Player : IState_Player
 
     public void Enter()
     {
-        Debug.Log("RunState");
+        // Debug.Log("RunState");
         player.SetActiveState(PlayerFSM.PlayerState.Running);
     }
 

@@ -11,7 +11,7 @@ public class IdleState_Player : IState_Player
 
     public void Enter()
     {
-        Debug.Log("IdleState");
+        // Debug.Log("IdleState");
         player.SetActiveState(PlayerFSM.PlayerState.Idle);
     }
 
