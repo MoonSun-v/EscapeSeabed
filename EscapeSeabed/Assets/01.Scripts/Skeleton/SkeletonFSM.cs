@@ -14,7 +14,7 @@ public class SkeletonFSM : MonoBehaviour
     public float moveSpeed = 0.5f;
     public float lastFlipXPos;
 
-    public enum SkeletonState { Idle, Walking }
+    public enum SkeletonState { Idle, Walking, Hurt }
 
     void Start()
     {
@@ -56,6 +56,11 @@ public class SkeletonFSM : MonoBehaviour
         rb.velocity = Vector2.zero;
     }
 
+    public void Destroying()
+    {
+        Destroy(gameObject);
+    }
+
     public void ChangeState(IState_Enemy newState)
     {
         currentState?.Exit();
@@ -68,6 +73,14 @@ public class SkeletonFSM : MonoBehaviour
         foreach (var param in System.Enum.GetValues(typeof(SkeletonState)))
         {
             animator.SetBool(param.ToString(), param.Equals(activeParam));
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Bullet"))
+        {
+            ChangeState(new HurtState_Skeleton(this));
         }
     }
 }
