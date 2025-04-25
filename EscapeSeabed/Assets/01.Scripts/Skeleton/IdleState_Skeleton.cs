@@ -27,17 +27,14 @@ public class IdleState_Skeleton : IState_Enemy
 
         if (elapsedTime > IdleTime)
         {
-            // 방향 전환
             skeleton.moveSpeed *= -1;
 
             Vector3 localScale = skeleton.transform.localScale;
             localScale.x *= -1;
             skeleton.transform.localScale = localScale;
 
-            // 새로운 기준점 저장
             skeleton.lastFlipXPos = skeleton.transform.position.x;
 
-            // Walk 상태로 전환
             skeleton.ChangeState(new WalkState_Skeleton(skeleton));
         }
     }

@@ -105,6 +105,7 @@ public class PlayerFSM : MonoBehaviour
         GameObject bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
+        
         if (transform.localScale.x < 0) 
         {
             rb.AddForce(-transform.right * launchSpeed, ForceMode2D.Impulse);
@@ -115,6 +116,7 @@ public class PlayerFSM : MonoBehaviour
             rb.AddForce(transform.right * launchSpeed, ForceMode2D.Impulse);
             bullet.transform.localScale = new Vector3(Mathf.Abs(bullet.transform.localScale.x), bullet.transform.localScale.y, bullet.transform.localScale.z);
         }
+        
     }
 
     public Vector2 GetVelocity()

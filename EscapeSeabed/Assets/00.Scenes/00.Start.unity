@@ -1380,7 +1380,7 @@ GameObject:
   - component: {fileID: 254169540}
   m_Layer: 0
   m_Name: Skeleton
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1435,7 +1435,7 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -2604,7 +2604,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   BulletPrefab: {fileID: 2969107253425837967, guid: d54e86473ff92b14fa851dcf00c5f264, type: 3}
-  launchSpeed: 10
+  launchSpeed: 15
 --- !u!1 &1424936013
 GameObject:
   m_ObjectHideFlags: 0

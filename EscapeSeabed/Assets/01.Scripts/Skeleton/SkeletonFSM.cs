@@ -22,7 +22,6 @@ public class SkeletonFSM : MonoBehaviour
         animator = GetComponent<Animator>();
         col = GetComponent<Collider2D>();
 
-        // 초기 기준 x위치 저장
         lastFlipXPos = transform.position.x;
 
         ChangeState(new IdleState_Skeleton(this));
