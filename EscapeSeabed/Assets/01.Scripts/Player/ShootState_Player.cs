@@ -31,6 +31,11 @@ public class ShootState_Player : IState_Player
 
     }
 
+    public void FixedUpdate()
+    {
+
+    }
+
     public void Exit()
     {
 

@@ -35,6 +35,11 @@ public class IdleState_Player : IState_Player
         
     }
 
+    public void FixedUpdate()
+    {
+
+    }
+
     public void Exit() 
     {
 

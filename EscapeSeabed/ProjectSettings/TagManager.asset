@@ -7,6 +7,7 @@ TagManager:
   - Monster
   - Bullet
   - FireBall
+  - Ladder
   layers:
   - Default
   - TransparentFX
@@ -14,7 +15,7 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
+  - Ladder
   - 
   - 
   - 

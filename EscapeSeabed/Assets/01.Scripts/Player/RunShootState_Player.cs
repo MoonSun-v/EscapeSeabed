@@ -28,6 +28,11 @@ public class RunShootState_Player : IState_Player
         if (elapsedTime > 0.5) player.ChangeState(new RunState_Player(player));
     }
 
+    public void FixedUpdate()
+    {
+
+    }
+
     public void Exit()
     {
 

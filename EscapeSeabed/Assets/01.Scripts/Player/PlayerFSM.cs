@@ -21,11 +21,16 @@ public class PlayerFSM : MonoBehaviour
     public GameObject BulletPrefab;
     public float launchSpeed = 15.0f;
 
+    [Header("Climbing")]
+    public bool isClimbing = false;
+    public float climbSpeed = 3f;
+    public LayerMask ladderLayer;
+
     private float moveX = 0f; // 좌우 
     private float minX, maxX; // 카메라 경계
     private float wall_distance = 0.4f;
 
-    public enum PlayerState { Idle, Running, Jumping, Shooting, RunShooting, Hurt }
+    public enum PlayerState { Idle, Running, Jumping, Shooting, RunShooting, Hurt, Climbing }
 
     void Start()
     {
@@ -60,6 +65,8 @@ public class PlayerFSM : MonoBehaviour
 
     void FixedUpdate()
     {
+        currentState?.FixedUpdate();
+
         if (IsTouchingWall() && !IsGrounded()) { rb.velocity = new Vector2(0, rb.velocity.y); } // [ 공중에서 벽 충돌 ]
         else { rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y); }// [ 좌우 이동 ]
 
@@ -170,6 +177,12 @@ public class PlayerFSM : MonoBehaviour
         return hitLower || hitUpper;
     }
 
+    // [ 사다리 체크 ]
+    public bool IsTouchingLadder()
+    {
+        return Physics2D.OverlapCircle(transform.position, 0.2f, ladderLayer);
+    }
+
     // [ 충돌 체크 ]
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -184,6 +197,14 @@ public class PlayerFSM : MonoBehaviour
         if (other.gameObject.CompareTag("FireBall"))
         {
             ChangeState(new HurtState_Player(this));
+        }
+
+        if (other.CompareTag("Ladder"))
+        {
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                ChangeState(new ClimbingState_Player(this));
+            }
         }
     }
 }

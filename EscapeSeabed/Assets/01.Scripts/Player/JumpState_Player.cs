@@ -48,6 +48,12 @@ public class JumpState_Player : IState_Player
     {
         elapsedTime += Time.deltaTime;
 
+        if(player.IsTouchingLadder())
+        {
+            Debug.Log("사다리와 충돌");
+            player.ChangeState(new ClimbingState_Player(player));
+        }
+
         if (player.IsGrounded() && player.GetVelocity().y <= 0.01f && elapsedTime >= coyoteTime)
         {
             player.ChangeState(new IdleState_Player(player));
@@ -60,6 +66,10 @@ public class JumpState_Player : IState_Player
 
     }
 
+    public void FixedUpdate()
+    {
+
+    }
 
     public void Exit() 
     {

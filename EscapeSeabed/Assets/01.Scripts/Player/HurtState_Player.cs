@@ -45,6 +45,11 @@ public class HurtState_Player : IState_Player
         }
     }
 
+    public void FixedUpdate()
+    {
+
+    }
+
     public void Exit()
     {
         
