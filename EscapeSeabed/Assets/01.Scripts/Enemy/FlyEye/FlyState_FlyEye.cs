@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlyState_FlyEye : IState_FlyEye
+public class FlyState_FlyEye : IState_Enemy
 {
     private FlyEyeFSM flyeye;
 

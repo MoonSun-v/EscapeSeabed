@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleState_Lizard : IState_Lizard
+public class IdleState_Lizard : IState_Enemy
 {
     private LizardFSM lizard;
 
@@ -16,7 +16,7 @@ public class IdleState_Lizard : IState_Lizard
 
     public void Enter()
     {
-        Debug.Log("Lizard_Idle");
+        // Debug.Log("Lizard_Idle");
         elapsedTime = 0.0f;
         lizard.SetActiveState(LizardFSM.LizardState.Idle);
     }
@@ -29,6 +29,11 @@ public class IdleState_Lizard : IState_Lizard
         {
             lizard.ChangeState(new ShootState_Lizard(lizard));
         }
+    }
+
+    public void FixedUpdate()
+    {
+
     }
 
     public void Exit()

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FlyEyeFSM : MonoBehaviour
 {
-    private IState_FlyEye currentState;
+    private IState_Enemy currentState;
 
     [Header("Components")]
     public Rigidbody2D rb;
@@ -38,7 +38,7 @@ public class FlyEyeFSM : MonoBehaviour
         currentState?.FixedUpdate();
     }
 
-    public void ChangeState(IState_FlyEye newState)
+    public void ChangeState(IState_Enemy newState)
     {
         currentState?.Exit();
         currentState = newState;
@@ -57,7 +57,6 @@ public class FlyEyeFSM : MonoBehaviour
     {
         return Mathf.Abs(transform.position.x - lastFlipXPos);
     }
-
 
     public void Move()
     {

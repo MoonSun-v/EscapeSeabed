@@ -5,7 +5,7 @@ using static FlyEyeFSM;
 
 public class LizardFSM : MonoBehaviour
 {
-    private IState_Lizard currentState;
+    private IState_Enemy currentState;
 
     [Header("Components")]
     public Rigidbody2D rb;
@@ -32,7 +32,7 @@ public class LizardFSM : MonoBehaviour
         currentState?.Update();
     }
 
-    public void ChangeState(IState_Lizard newState)
+    public void ChangeState(IState_Enemy newState)
     {
         currentState?.Exit();
         currentState = newState;

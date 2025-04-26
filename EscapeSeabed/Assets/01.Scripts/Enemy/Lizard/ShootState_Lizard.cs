@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootState_Lizard : IState_Lizard
+public class ShootState_Lizard : IState_Enemy
 {
     private LizardFSM lizard;
 
@@ -23,7 +23,6 @@ public class ShootState_Lizard : IState_Lizard
 
     public void Update()
     {
-        
         elapsedTime += Time.deltaTime;
 
         if (elapsedTime > ShootTime)
@@ -31,6 +30,11 @@ public class ShootState_Lizard : IState_Lizard
             lizard.ChangeState(new IdleState_Lizard(lizard));
         }
         
+    }
+
+    public void FixedUpdate()
+    {
+
     }
 
     public void Exit()

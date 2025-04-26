@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HurtState_Lizard : IState_Lizard
+public class HurtState_Lizard : IState_Enemy
 {
     private LizardFSM lizard;
 
@@ -29,6 +29,12 @@ public class HurtState_Lizard : IState_Lizard
             lizard.Destroying();
         }
     }
+
+    public void FixedUpdate()
+    {
+
+    }
+
 
     public void Exit()
     {
