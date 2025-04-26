@@ -6,7 +6,7 @@ public class IdleState_Lizard : IState_Enemy
 {
     private LizardFSM lizard;
 
-    private float IdleTime = 2.5f;
+    private float IdleTime = 3.5f;
     private float elapsedTime = 0.0f;
 
     public IdleState_Lizard(LizardFSM lizard)

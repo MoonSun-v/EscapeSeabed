@@ -1364,6 +1364,37 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1 &188292434
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 188292435}
+  m_Layer: 0
+  m_Name: FireBallSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &188292435
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188292434}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.171, y: -0.012, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1487352817}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &276966024
 GameObject:
   m_ObjectHideFlags: 0
@@ -2561,8 +2592,9 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.24, y: -1.78, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
-  m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 188292435}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1487352818
@@ -2654,6 +2686,9 @@ MonoBehaviour:
   col: {fileID: 0}
   moveSpeed: 0.6
   lastFlipXPos: 0
+  FireBallPrefab: {fileID: 2533250313424434542, guid: d6461047a30ccf54cae7468eb8ae3ba5, type: 3}
+  fireSpawnPoint: {fileID: 188292435}
+  launchSpeed: 5
 --- !u!1 &1614015051
 GameObject:
   m_ObjectHideFlags: 0
@@ -3485,7 +3520,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2875745988076784902, guid: a684e14899f3cea4e8847fe602c39877, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7902441331468423336, guid: a684e14899f3cea4e8847fe602c39877, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3546,7 +3581,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2338114455577747916, guid: 0d3caf957b07cae439db5e3bccd567fc, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8560253731669859921, guid: 0d3caf957b07cae439db5e3bccd567fc, type: 3}
       propertyPath: m_LocalPosition.x

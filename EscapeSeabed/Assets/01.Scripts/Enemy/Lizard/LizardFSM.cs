@@ -16,6 +16,12 @@ public class LizardFSM : MonoBehaviour
     public float moveSpeed = 0.6f;
     public float lastFlipXPos;
 
+    [Header("Shooting")]
+    public GameObject FireBallPrefab;
+    public Transform fireSpawnPoint; 
+    public float launchSpeed = 5.0f;
+
+
     public enum LizardState { Idle, Shooting, Hurt }
 
     void Start()
@@ -57,6 +63,23 @@ public class LizardFSM : MonoBehaviour
         if (other.gameObject.CompareTag("Bullet"))
         {
             ChangeState(new HurtState_Lizard(this));
+        }
+    }
+
+    public void Shoot()
+    {
+        GameObject fire = Instantiate(FireBallPrefab, fireSpawnPoint.position, fireSpawnPoint.rotation);
+        Rigidbody2D rb = fire.GetComponent<Rigidbody2D>();
+
+        if (transform.localScale.x < 0)
+        {
+            rb.AddForce(transform.right * launchSpeed, ForceMode2D.Impulse);
+            fire.transform.localScale = new Vector3(-Mathf.Abs(fire.transform.localScale.x), fire.transform.localScale.y, fire.transform.localScale.z);
+        }
+        else
+        {
+            rb.AddForce(-transform.right * launchSpeed, ForceMode2D.Impulse);
+            fire.transform.localScale = new Vector3(Mathf.Abs(fire.transform.localScale.x), fire.transform.localScale.y, fire.transform.localScale.z);
         }
     }
 }

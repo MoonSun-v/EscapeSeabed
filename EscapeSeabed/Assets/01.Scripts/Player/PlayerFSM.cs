@@ -115,7 +115,6 @@ public class PlayerFSM : MonoBehaviour
             rb.AddForce(transform.right * launchSpeed, ForceMode2D.Impulse);
             bullet.transform.localScale = new Vector3(Mathf.Abs(bullet.transform.localScale.x), bullet.transform.localScale.y, bullet.transform.localScale.z);
         }
-        
     }
 
     public Vector2 GetVelocity()
@@ -180,4 +179,11 @@ public class PlayerFSM : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("FireBall"))
+        {
+            ChangeState(new HurtState_Player(this));
+        }
+    }
 }
