@@ -27,8 +27,8 @@ public class DataManager : MonoBehaviour
     void Start()
     {
         // ÃÊ±âÈ­ 
-        playerdata.HeartCount = 3;
-        playerdata.AttackCount = 0;
+        playerdata.HeartCount = 2;
+        playerdata.AttackCount = 1;
     }
 
     void Update()
@@ -39,6 +39,6 @@ public class DataManager : MonoBehaviour
 
 public class PlayerData
 {
-    public int HeartCount;
+    public int HeartCount;  // DataManager.instance.playerdata.HeartCount--;
     public int AttackCount;
 }

@@ -23,13 +23,12 @@ public class SceneChange : MonoBehaviour
         #endregion
     }
 
-    // 현재 씬 이름을 확인하는 함수
     public string GetCurrentSceneName()
     {
-        return SceneManager.GetActiveScene().name;  // UnityEngine.SceneManagement의 SceneManager를 사용
+        return SceneManager.GetActiveScene().name;  
     }
 
-    // 다음 씬으로 전환하는 함수 (씬 이름으로 전환)
+    // 다음 씬으로 전환
     public void LoadNextScene()
     {
         switch (SceneManager.GetActiveScene().name)
