@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -14,10 +15,10 @@ public class PlayerFSM : MonoBehaviour
     public float moveSpeed = 5f;
     public float jumpForce = 12f;
     public float fallForce = 8f;
-    public Transform groundCheck;
+    public Transform groundCheckLeft;
+    public Transform groundCheckRight;
     public float groundCheckRadius = 0.1f;
     public LayerMask groundLayer;
-    public LayerMask aeriagroundLayer;
     public bool isMoveable = true;
 
     [Header("Shooting")]
@@ -31,8 +32,6 @@ public class PlayerFSM : MonoBehaviour
     public float ladderCheckRadius = 0.1f;
     public LayerMask ladderLayer;
     public bool isAtLadderTop = false;
-
-    public bool isJumping;
 
     private float moveX = 0f; // 좌우 
     private float minX, maxX; // 카메라 경계
@@ -62,6 +61,8 @@ public class PlayerFSM : MonoBehaviour
         currentState?.Update();
 
         Move();
+
+        // Debug.Log("IsAeriaGrounded() : " + IsAeriaGrounded());
     }
 
     void FixedUpdate() // 리지드바디 연산 
@@ -149,11 +150,9 @@ public class PlayerFSM : MonoBehaviour
     void OnDrawGizmos()
     {
         // 땅 
-        if (groundCheck != null)
-        {
-            Gizmos.color = IsGrounded() ? Color.green : Color.red;
-            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-        }
+        Gizmos.color = IsGrounded() ? Color.green : Color.red;
+        Gizmos.DrawWireSphere(groundCheckLeft.position, groundCheckRadius);
+        Gizmos.DrawWireSphere(groundCheckRight.position, groundCheckRadius);
 
         // 벽
         if (Application.isPlaying)
@@ -178,14 +177,14 @@ public class PlayerFSM : MonoBehaviour
     public bool IsGrounded()
     {
         if (IsTouchingLadder() && IsGroundingLadder()) return false;
-        return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-    }
 
-    // [ 공중 땅 체크 ]
-    public bool IsAeriaGrounded()
-    {
-        if (IsTouchingLadder() && IsGroundingLadder()) return false;
-        return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, aeriagroundLayer);
+        // 왼발과 오른발 위치에서 각각 땅 체크
+        bool isLeftFootOnGround = Physics2D.OverlapCircle(groundCheckLeft.position, groundCheckRadius, groundLayer);
+        bool isRightFootOnGround = Physics2D.OverlapCircle(groundCheckRight.position, groundCheckRadius, groundLayer);
+
+        // 왼발이나 오른발이 땅에 닿으면 땅 위로 간주
+        return isLeftFootOnGround || isRightFootOnGround;
+
     }
 
     // [ 벽 부딪힘 체크 ]
@@ -213,9 +212,14 @@ public class PlayerFSM : MonoBehaviour
     }
     public bool IsGroundingLadder()
     {
-        return Physics2D.OverlapCircle(groundCheck.position, ladderCheckRadius, ladderLayer);
+        // 왼발과 오른발 위치에서 각각 땅 체크
+        bool isLeftFootOnGround = Physics2D.OverlapCircle(groundCheckLeft.position, ladderCheckRadius, ladderLayer);
+        bool isRightFootOnGround = Physics2D.OverlapCircle(groundCheckRight.position, ladderCheckRadius, ladderLayer);
+
+        // 왼발이나 오른발이 땅에 닿으면 땅 위로 간주
+        return isLeftFootOnGround || isRightFootOnGround;
     }
-    
+
     // [ 충돌 체크 ]
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -223,44 +227,8 @@ public class PlayerFSM : MonoBehaviour
         {
             ChangeState(new HurtState_Player(this));
         }
-
-        if (collision.gameObject.CompareTag("AeriaGround") /*|| !IsAeriaGrounded()*/)
-        {
-            // GetComponent<BoxCollider2D>().isTrigger = true;
-            
-            Collider2D otherCol = collision.collider;
-
-            // 충돌 지점(contact point) 가져오기
-            foreach (ContactPoint2D contact in collision.contacts)
-            {
-                // 접촉한 점이 플레이어보다 '아래'에 있다면 (즉 발로 밟은 경우)
-                if (contact.point.y < transform.position.y)
-                {
-                    Debug.Log("발로 AeriaGround 착지 -> 충돌 허용");
-                    Physics2D.IgnoreCollision(col, otherCol, false);
-                    return;
-                }
-            }
-
-            // 만약 모두 위/옆 충돌이면
-            Debug.Log("몸통/머리로 AeriaGround 충돌 -> 충돌 무시");
-            Physics2D.IgnoreCollision(col, otherCol, true);
-            
-        }
     }
 
-    
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("AeriaGround"))
-        {
-            Collider2D otherCol = collision.collider;
-
-            Physics2D.IgnoreCollision(col, otherCol, false);
-            Debug.Log("충돌 허용 복구합니다.");
-        }
-    }
-    
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("FireBall"))
@@ -294,7 +262,6 @@ public class PlayerFSM : MonoBehaviour
         {
             isAtLadderTop = false;
         }
-
     }
 
     void HandleStartTrigger()

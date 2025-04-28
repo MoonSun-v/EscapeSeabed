@@ -35,6 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2550430212133645942}
+  - {fileID: 9026309207941959097}
   - {fileID: 8574397544182477908}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -199,14 +200,12 @@ MonoBehaviour:
   moveSpeed: 5
   jumpForce: 12
   fallForce: 8
-  groundCheck: {fileID: 2550430212133645942}
+  groundCheckLeft: {fileID: 2550430212133645942}
+  groundCheckRight: {fileID: 9026309207941959097}
   groundCheckRadius: 0.1
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  aeriagroundLayer:
-    serializedVersion: 2
-    m_Bits: 512
   isMoveable: 1
   BulletPrefab: {fileID: 2969107253425837967, guid: d54e86473ff92b14fa851dcf00c5f264, type: 3}
   launchSpeed: 15
@@ -218,7 +217,37 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   isAtLadderTop: 0
-  isJumping: 0
+--- !u!1 &7453992968392581611
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9026309207941959097}
+  m_Layer: 0
+  m_Name: GroundCheckRight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9026309207941959097
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7453992968392581611}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0698, y: -0.191, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3125513386563072747}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7471363491626367328
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,7 +258,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2550430212133645942}
   m_Layer: 0
-  m_Name: GroundCheck
+  m_Name: GroundCheckLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -244,7 +273,7 @@ Transform:
   m_GameObject: {fileID: 7471363491626367328}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.01, y: -0.191, z: 0}
+  m_LocalPosition: {x: -0.0427, y: -0.191, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

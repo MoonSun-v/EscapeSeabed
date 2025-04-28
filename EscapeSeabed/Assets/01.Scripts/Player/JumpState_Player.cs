@@ -29,14 +29,14 @@ public class JumpState_Player : IState_Player
         bool jumpJustPressed = Input.GetKeyDown(KeyCode.UpArrow);
 
         // [ 더블 점프 ]
-        if (jumpJustPressed && !(player.IsGrounded() || player.IsAeriaGrounded()) && canDoubleJump)
+        if (jumpJustPressed && !player.IsGrounded() && canDoubleJump)
         {
             player.Jump();
             canDoubleJump = false;
         }
 
         // [ 연속 점프 ]
-        if (jumpPressed && (player.IsGrounded() || player.IsAeriaGrounded()) && elapsedTime >= coyoteTime)
+        if (jumpPressed && player.IsGrounded() && elapsedTime >= coyoteTime)
         {
             player.ChangeState(new JumpState_Player(player));
         }
@@ -54,7 +54,7 @@ public class JumpState_Player : IState_Player
             player.ChangeState(new ClimbingState_Player(player));
         }
 
-        if ((player.IsGrounded() || player.IsAeriaGrounded()) && player.GetVelocity().y <= 0.01f && elapsedTime >= coyoteTime)
+        if (player.IsGrounded() && player.GetVelocity().y <= 0.01f && elapsedTime >= coyoteTime)
         {
             player.ChangeState(new IdleState_Player(player));
         }
@@ -68,6 +68,6 @@ public class JumpState_Player : IState_Player
 
     public void Exit() 
     {
-        // player.isJumping = false;
+        
     }
 }
