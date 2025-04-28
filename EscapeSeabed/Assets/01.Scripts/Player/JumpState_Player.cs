@@ -4,7 +4,6 @@ public class JumpState_Player : IState_Player
 {
     private PlayerFSM player;
     private float coyoteTime = 0.05f; // 점프 후 해당 시간동안 바닥 감지 무시
-    private float fallTime = 0.4f;
     private float elapsedTime;
     private bool canDoubleJump;  
 
@@ -18,7 +17,6 @@ public class JumpState_Player : IState_Player
         // Debug.Log("JumpState");
         player.SetActiveState(PlayerFSM.PlayerState.Jumping);
         player.Jump();
-        // player.isJumping = true;
         canDoubleJump = true;  
         elapsedTime = 0f;
     }
@@ -41,7 +39,7 @@ public class JumpState_Player : IState_Player
             player.ChangeState(new JumpState_Player(player));
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && (DataManager.instance.playerdata.AttackCount >= 1))
             player.ChangeState(new ShootState_Player(player));
     }
 

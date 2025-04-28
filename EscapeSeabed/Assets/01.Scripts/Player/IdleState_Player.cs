@@ -17,7 +17,7 @@ public class IdleState_Player : IState_Player
 
     public void HandleInput()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && (DataManager.instance.playerdata.AttackCount >= 1))
             player.ChangeState(new ShootState_Player(player));
 
         if (Input.GetKeyDown(KeyCode.Space) && (Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0))

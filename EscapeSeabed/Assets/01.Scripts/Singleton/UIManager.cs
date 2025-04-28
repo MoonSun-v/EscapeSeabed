@@ -104,6 +104,8 @@ public class UIManager : MonoBehaviour
             img.color = originalColor;
             yield return new WaitForSeconds(0.1f);
         }
+
+        UpdateHeartUI(DataManager.instance.playerdata.HeartCount);
     }
 
     // AttackÀÌ ´Ã¾î³µÀ» ¶§ ±ôºıÀÌ´Â ÄÚ·çÆ¾
@@ -122,5 +124,7 @@ public class UIManager : MonoBehaviour
             img.color = originalColor;
             yield return new WaitForSeconds(0.1f);
         }
+
+        UpdateAttackUI(DataManager.instance.playerdata.AttackCount);
     }
 }

@@ -119,6 +119,8 @@ public class PlayerFSM : MonoBehaviour
 
     public void Shoot()
     {
+        DataManager.instance.playerdata.AttackCount--;
+
         GameObject bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
