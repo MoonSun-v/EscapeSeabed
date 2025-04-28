@@ -33,7 +33,7 @@ public class PlayerFSM : MonoBehaviour
     public LayerMask ladderLayer;
     public bool isAtLadderTop = false;
 
-    private float moveX = 0f; // ÁÂ¿ì 
+    public float moveX = 0f; // ÁÂ¿ì 
     private float minX, maxX; // Ä«¸Þ¶ó °æ°è
     private float wall_distance = 0.4f;
 
@@ -248,12 +248,7 @@ public class PlayerFSM : MonoBehaviour
         {
             isAtLadderTop = true;
         }
-
-        if (other.CompareTag("StartTrigger"))
-        {
-            HandleStartTrigger();
-        }
-
+        
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -264,23 +259,9 @@ public class PlayerFSM : MonoBehaviour
         }
     }
 
-    void HandleStartTrigger()
-    {
-        isMoveable = false;
-        moveX = 0;
+    
 
-        if (rb != null)
-        {
-            rb.velocity = Vector2.zero;
-            Vector2 knockbackDir = new Vector2(-1, 1).normalized; 
-            float knockbackForce = 20f;
-            rb.AddForce(knockbackDir * knockbackForce, ForceMode2D.Impulse);
-        }
-
-        CollisionOff();
-    }
-
-    void CollisionOff()
+    public void CollisionOff()
     {
         if (col != null) col.enabled = false;
     }

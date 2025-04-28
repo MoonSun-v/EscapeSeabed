@@ -9,8 +9,7 @@ TagManager:
   - FireBall
   - Ladder
   - LadderTop
-  - StartTrigger
-  - AeriaGround
+  - NextScene
   layers:
   - Default
   - TransparentFX
