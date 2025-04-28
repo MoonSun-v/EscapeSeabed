@@ -28,8 +28,11 @@ public class RunState_Player : IState_Player
     }
 
     public void Update() 
-    { 
-
+    {
+        if ((player.IsGroundingLadder() && Input.GetKey(KeyCode.DownArrow)) || player.isAtLadderTop)
+        {
+            player.ChangeState(new ClimbingState_Player(player));
+        }
     }
 
     public void FixedUpdate()

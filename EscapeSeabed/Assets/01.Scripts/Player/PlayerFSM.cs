@@ -27,7 +27,8 @@ public class PlayerFSM : MonoBehaviour
     public Transform ladderCheck;
     public float ladderCheckRadius = 0.1f;
     public LayerMask ladderLayer;
-    public GameObject ladderPrefab;
+    public bool isAtLadderTop = false;
+    // public GameObject ladderPrefab;
 
     private float moveX = 0f; // 좌우 
     private float minX, maxX; // 카메라 경계
@@ -64,6 +65,7 @@ public class PlayerFSM : MonoBehaviour
             scale.x = Mathf.Abs(scale.x) * Mathf.Sign(moveX);
             transform.localScale = scale;
         }
+
     }
 
     void FixedUpdate()
@@ -165,7 +167,7 @@ public class PlayerFSM : MonoBehaviour
 
     public bool IsGrounded()
     {
-        if (IsTouchingLadder()) return false;
+        if (IsTouchingLadder()&& IsGroundingLadder()) return false;
         return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
 
@@ -173,7 +175,7 @@ public class PlayerFSM : MonoBehaviour
     // [ 벽 부딪힘 체크 ]
     public bool IsTouchingWall()
     {
-        if(IsTouchingLadder()) return false;
+        if(IsTouchingLadder()&& IsGroundingLadder()) return false;
 
         Vector2 direction = Vector2.right * Mathf.Sign(transform.localScale.x);
 
@@ -193,11 +195,12 @@ public class PlayerFSM : MonoBehaviour
     {
         return Physics2D.OverlapCircle(ladderCheck.position, ladderCheckRadius, ladderLayer);
     }
+    
     public bool IsGroundingLadder()
     {
         return Physics2D.OverlapCircle(groundCheck.position, ladderCheckRadius, ladderLayer);
     }
-
+    
     // [ 충돌 체크 ]
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -220,6 +223,19 @@ public class PlayerFSM : MonoBehaviour
             {
                 ChangeState(new ClimbingState_Player(this));
             }
+        }
+
+        if (other.CompareTag("LadderTop"))
+        {
+            isAtLadderTop = true;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("LadderTop"))
+        {
+            isAtLadderTop = false;
         }
     }
 }

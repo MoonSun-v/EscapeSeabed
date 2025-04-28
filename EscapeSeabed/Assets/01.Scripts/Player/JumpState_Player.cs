@@ -48,20 +48,14 @@ public class JumpState_Player : IState_Player
     {
         elapsedTime += Time.deltaTime;
 
-        if(player.IsTouchingLadder())
+        if ((player.IsGroundingLadder() && Input.GetKey(KeyCode.DownArrow)) || player.isAtLadderTop || player.IsTouchingLadder())
         {
-            Debug.Log("사다리와 충돌");
             player.ChangeState(new ClimbingState_Player(player));
         }
 
         if (player.IsGrounded() && player.GetVelocity().y <= 0.01f && elapsedTime >= coyoteTime)
         {
             player.ChangeState(new IdleState_Player(player));
-        }
-
-        if (player.IsTouchingWall() && elapsedTime > fallTime)
-        {
-            player.Fall(); Debug.Log("벽에 부딪혀 떨어집니다.");
         }
 
     }
