@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerFSM : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class PlayerFSM : MonoBehaviour
     public Transform groundCheck;
     public float groundCheckRadius = 0.1f;
     public LayerMask groundLayer;
+    public LayerMask aeriagroundLayer;
+    public bool isMoveable = true;
 
     [Header("Shooting")]
     public GameObject BulletPrefab;
@@ -28,7 +31,8 @@ public class PlayerFSM : MonoBehaviour
     public float ladderCheckRadius = 0.1f;
     public LayerMask ladderLayer;
     public bool isAtLadderTop = false;
-    // public GameObject ladderPrefab;
+
+    public bool isJumping;
 
     private float moveX = 0f; // 좌우 
     private float minX, maxX; // 카메라 경계
@@ -49,33 +53,24 @@ public class PlayerFSM : MonoBehaviour
         Vector3 max = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, 0)); // 오른쪽 위 
         minX = min.x + col.bounds.extents.x;
         maxX = max.x - col.bounds.extents.x;
+
     }
 
-    void Update()
+    void Update() // 키 입력 
     {
         currentState?.HandleInput();
         currentState?.Update();
 
-        moveX = Input.GetAxisRaw("Horizontal"); // -1.0 ~ 1.0
-        
-        // [ 좌우 반전 ]
-        if (moveX != 0)
-        {
-            Vector3 scale = transform.localScale;
-            scale.x = Mathf.Abs(scale.x) * Mathf.Sign(moveX);
-            transform.localScale = scale;
-        }
-
+        Move();
     }
 
-    void FixedUpdate()
+    void FixedUpdate() // 리지드바디 연산 
     {
         currentState?.FixedUpdate();
 
         if (IsTouchingWall() && !IsGrounded()) { rb.velocity = new Vector2(0, rb.velocity.y); } // [ 공중에서 벽 충돌 ]
         else { rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y); }// [ 좌우 이동 ]
 
-            
         // [ 화면 경계 ]
         Vector3 clampedPosition = transform.position;
         clampedPosition.x = Mathf.Clamp(clampedPosition.x, minX, maxX);
@@ -94,6 +89,20 @@ public class PlayerFSM : MonoBehaviour
         foreach (var param in System.Enum.GetValues(typeof(PlayerState)))
         {
             animator.SetBool(param.ToString(), param.Equals(activeParam));
+        }
+    }
+
+    public void Move()
+    {
+        if (!isMoveable) return;
+        moveX = Input.GetAxisRaw("Horizontal"); // -1.0 ~ 1.0
+
+        // [ 좌우 반전 ]
+        if (moveX != 0)
+        {
+            Vector3 scale = transform.localScale;
+            scale.x = Mathf.Abs(scale.x) * Mathf.Sign(moveX);
+            transform.localScale = scale;
         }
     }
 
@@ -165,12 +174,19 @@ public class PlayerFSM : MonoBehaviour
         Gizmos.DrawWireSphere(ladderCheck.position, ladderCheckRadius);
     }
 
+    // [ 땅 체크 ]
     public bool IsGrounded()
     {
-        if (IsTouchingLadder()&& IsGroundingLadder()) return false;
+        if (IsTouchingLadder() && IsGroundingLadder()) return false;
         return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
 
+    // [ 공중 땅 체크 ]
+    public bool IsAeriaGrounded()
+    {
+        if (IsTouchingLadder() && IsGroundingLadder()) return false;
+        return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, aeriagroundLayer);
+    }
 
     // [ 벽 부딪힘 체크 ]
     public bool IsTouchingWall()
@@ -195,7 +211,6 @@ public class PlayerFSM : MonoBehaviour
     {
         return Physics2D.OverlapCircle(ladderCheck.position, ladderCheckRadius, ladderLayer);
     }
-    
     public bool IsGroundingLadder()
     {
         return Physics2D.OverlapCircle(groundCheck.position, ladderCheckRadius, ladderLayer);
@@ -208,8 +223,44 @@ public class PlayerFSM : MonoBehaviour
         {
             ChangeState(new HurtState_Player(this));
         }
+
+        if (collision.gameObject.CompareTag("AeriaGround") /*|| !IsAeriaGrounded()*/)
+        {
+            // GetComponent<BoxCollider2D>().isTrigger = true;
+            
+            Collider2D otherCol = collision.collider;
+
+            // 충돌 지점(contact point) 가져오기
+            foreach (ContactPoint2D contact in collision.contacts)
+            {
+                // 접촉한 점이 플레이어보다 '아래'에 있다면 (즉 발로 밟은 경우)
+                if (contact.point.y < transform.position.y)
+                {
+                    Debug.Log("발로 AeriaGround 착지 -> 충돌 허용");
+                    Physics2D.IgnoreCollision(col, otherCol, false);
+                    return;
+                }
+            }
+
+            // 만약 모두 위/옆 충돌이면
+            Debug.Log("몸통/머리로 AeriaGround 충돌 -> 충돌 무시");
+            Physics2D.IgnoreCollision(col, otherCol, true);
+            
+        }
     }
 
+    
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("AeriaGround"))
+        {
+            Collider2D otherCol = collision.collider;
+
+            Physics2D.IgnoreCollision(col, otherCol, false);
+            Debug.Log("충돌 허용 복구합니다.");
+        }
+    }
+    
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("FireBall"))
@@ -229,6 +280,12 @@ public class PlayerFSM : MonoBehaviour
         {
             isAtLadderTop = true;
         }
+
+        if (other.CompareTag("StartTrigger"))
+        {
+            HandleStartTrigger();
+        }
+
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -237,5 +294,28 @@ public class PlayerFSM : MonoBehaviour
         {
             isAtLadderTop = false;
         }
+
     }
+
+    void HandleStartTrigger()
+    {
+        isMoveable = false;
+        moveX = 0;
+
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
+            Vector2 knockbackDir = new Vector2(-1, 1).normalized; 
+            float knockbackForce = 20f;
+            rb.AddForce(knockbackDir * knockbackForce, ForceMode2D.Impulse);
+        }
+
+        CollisionOff();
+    }
+
+    void CollisionOff()
+    {
+        if (col != null) col.enabled = false;
+    }
+
 }

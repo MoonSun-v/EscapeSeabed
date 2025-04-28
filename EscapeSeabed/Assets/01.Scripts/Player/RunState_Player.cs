@@ -23,7 +23,7 @@ public class RunState_Player : IState_Player
         if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 0)
             player.ChangeState(new IdleState_Player(player));
 
-        if (Input.GetKeyDown(KeyCode.UpArrow) && player.IsGrounded())
+        if (Input.GetKeyDown(KeyCode.UpArrow) && (player.IsGrounded()||player.IsAeriaGrounded()))
             player.ChangeState(new JumpState_Player(player));
     }
 

@@ -9,6 +9,8 @@ TagManager:
   - FireBall
   - Ladder
   - LadderTop
+  - StartTrigger
+  - AeriaGround
   layers:
   - Default
   - TransparentFX
@@ -19,7 +21,7 @@ TagManager:
   - Ladder
   - LadderTop
   - Player
-  - 
+  - AeriaGround
   - 
   - 
   - 

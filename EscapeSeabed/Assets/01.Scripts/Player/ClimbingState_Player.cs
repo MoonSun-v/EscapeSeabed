@@ -37,9 +37,10 @@ public class ClimbingState_Player : IState_Player
             if (player.isAtLadderTop)
             {
                 // 사다리 꼭대기 도착했으면 땅 위에 서도록
-                player.ChangeState(new IdleState_Player(player));
+                // player.ChangeState(new IdleState_Player(player));
                 player.rb.gravityScale = 5; // 다시 중력 적용
                 player.rb.velocity = Vector2.zero; // 멈추기
+                player.ChangeState(new IdleState_Player(player));
             }
             else
             {
