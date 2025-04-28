@@ -15,6 +15,7 @@ public class ClimbingState_Player : IState_Player
     {
         // 사다리 타기 시작할 때 (플레이어가 사다리 타기 상태로 전환될 때)
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("LadderTop"), true);
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Ground"), true);
 
         player.isClimbing = true;
         player.rb.gravityScale = 0; // 중력 제거
@@ -64,6 +65,7 @@ public class ClimbingState_Player : IState_Player
     {
         // 사다리 타기 끝날 때 (사다리 다 올라갔거나 내려왔을 때)
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("LadderTop"), false);
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Ground"), false);
 
         player.isClimbing = false;
         player.rb.gravityScale = 5; // 중력 다시 켜기
