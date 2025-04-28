@@ -24,7 +24,10 @@ public class PlayerFSM : MonoBehaviour
     [Header("Climbing")]
     public bool isClimbing = false;
     public float climbSpeed = 3f;
+    public Transform ladderCheck;
+    public float ladderCheckRadius = 0.1f;
     public LayerMask ladderLayer;
+    public GameObject ladderPrefab;
 
     private float moveX = 0f; // 좌우 
     private float minX, maxX; // 카메라 경계
@@ -92,11 +95,6 @@ public class PlayerFSM : MonoBehaviour
         }
     }
 
-    public bool IsGrounded()
-    {
-        return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-    }
-
     public void Jump()
     {
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
@@ -159,11 +157,24 @@ public class PlayerFSM : MonoBehaviour
             Gizmos.DrawLine(originLower, originLower + direction * wall_distance);
             Gizmos.DrawLine(originUpper, originUpper + direction * wall_distance);
         }
+
+        // 사다리 
+        Gizmos.color = IsTouchingLadder() ? Color.green : Color.red;
+        Gizmos.DrawWireSphere(ladderCheck.position, ladderCheckRadius);
     }
+
+    public bool IsGrounded()
+    {
+        if (IsTouchingLadder()) return false;
+        return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+    }
+
 
     // [ 벽 부딪힘 체크 ]
     public bool IsTouchingWall()
     {
+        if(IsTouchingLadder()) return false;
+
         Vector2 direction = Vector2.right * Mathf.Sign(transform.localScale.x);
 
         // 레이 시작 위치들 (몸통 위/아래)
@@ -180,7 +191,11 @@ public class PlayerFSM : MonoBehaviour
     // [ 사다리 체크 ]
     public bool IsTouchingLadder()
     {
-        return Physics2D.OverlapCircle(transform.position, 0.2f, ladderLayer);
+        return Physics2D.OverlapCircle(ladderCheck.position, ladderCheckRadius, ladderLayer);
+    }
+    public bool IsGroundingLadder()
+    {
+        return Physics2D.OverlapCircle(groundCheck.position, ladderCheckRadius, ladderLayer);
     }
 
     // [ 충돌 체크 ]

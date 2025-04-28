@@ -32,7 +32,11 @@ public class IdleState_Player : IState_Player
 
     public void Update()
     {
-        
+        if (player.IsGroundingLadder())
+        {
+            Debug.Log("바닥에 사다리 있음");
+            if(Input.GetKey(KeyCode.DownArrow)) player.ChangeState(new ClimbingState_Player(player));
+        }
     }
 
     public void FixedUpdate()

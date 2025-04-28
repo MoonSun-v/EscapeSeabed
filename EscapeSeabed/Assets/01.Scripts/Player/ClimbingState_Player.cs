@@ -51,6 +51,7 @@ public class ClimbingState_Player : IState_Player
     {
         player.isClimbing = false;
         player.rb.gravityScale = 5; // 중력 다시 켜기
-        player.SetActiveState(PlayerFSM.PlayerState.Idle); 
+
+        
     }
 }
