@@ -66,4 +66,13 @@ public class SceneChange : MonoBehaviour
     {
         SceneManager.LoadScene("00.Start");
     }
+
+    // [ 게임 종료 ]
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
 }

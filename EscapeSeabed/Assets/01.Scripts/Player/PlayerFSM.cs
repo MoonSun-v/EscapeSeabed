@@ -39,7 +39,7 @@ public class PlayerFSM : MonoBehaviour
 
     [Header("Invincibility")]
     public bool isInvincible = false;
-    private float invincibleTime = 4.0f; // 무적 유지 시간
+    private float invincibleTime = 5.0f; // 무적 유지 시간
     private float invincibleTimer = 0f;
     private Coroutine blinkCoroutine;
     public SpriteRenderer spriteRenderer; // 깜빡임 처리용
@@ -71,7 +71,6 @@ public class PlayerFSM : MonoBehaviour
         currentState?.Update();
 
         Move();
-
     }
     
 
@@ -295,8 +294,7 @@ public class PlayerFSM : MonoBehaviour
                 isInvincible = false;
                 invincibleTimer = 0f;
 
-                // 깜빡임 멈추고 색 복구
-                if (blinkCoroutine != null)
+                if (blinkCoroutine != null) 
                 {
                     StopCoroutine(blinkCoroutine);
                     blinkCoroutine = null;
