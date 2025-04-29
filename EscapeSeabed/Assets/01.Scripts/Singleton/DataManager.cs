@@ -28,7 +28,7 @@ public class DataManager : MonoBehaviour
     {
         // 데이터 초기화 
         playerdata.HeartCount = 3;
-        playerdata.AttackCount = 0;
+        playerdata.AttackCount = 0; 
     }
 }
 

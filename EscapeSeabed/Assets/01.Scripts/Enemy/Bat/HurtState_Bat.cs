@@ -19,6 +19,7 @@ public class HurtState_Bat : IState_Enemy
         // Debug.Log("Bat_Hurt");
         bat.StopMoving();
         bat.SetActiveState(BatFSM.BatState.Hurt);
+        if (bat.col != null) bat.col.enabled = false;
     }
 
     public void Update()
@@ -38,6 +39,6 @@ public class HurtState_Bat : IState_Enemy
 
     public void Exit()
     {
-
+        if (bat.col != null) bat.col.enabled = true;
     }
 }

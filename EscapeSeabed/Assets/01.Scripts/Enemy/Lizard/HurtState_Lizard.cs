@@ -18,6 +18,7 @@ public class HurtState_Lizard : IState_Enemy
     {
         // Debug.Log("Lizard_Hurt");
         lizard.SetActiveState(LizardFSM.LizardState.Hurt);
+        if (lizard.col != null) lizard.col.enabled = false;
     }
 
     public void Update()
@@ -38,6 +39,6 @@ public class HurtState_Lizard : IState_Enemy
 
     public void Exit()
     {
-
+        if (lizard.col != null) lizard.col.enabled = true;
     }
 }

@@ -1,4 +1,5 @@
 
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HurtState_Skeleton : IState_Enemy
@@ -18,6 +19,7 @@ public class HurtState_Skeleton : IState_Enemy
         // Debug.Log("Skeleton_Hurt");
         skeleton.StopMoving();
         skeleton.SetActiveState(SkeletonFSM.SkeletonState.Hurt);
+        if (skeleton.col != null) skeleton.col.enabled = false;
     }
 
     public void Update()
@@ -37,6 +39,6 @@ public class HurtState_Skeleton : IState_Enemy
 
     public void Exit()
     {
-
+        if (skeleton.col != null) skeleton.col.enabled = true;
     }
 }

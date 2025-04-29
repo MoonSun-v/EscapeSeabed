@@ -19,6 +19,7 @@ public class HurtState_FlyEye : IState_Enemy
         // Debug.Log("FlyEye_Hurt");
         flyeye.StopMoving();
         flyeye.SetActiveState(FlyEyeFSM.FlyEyeState.Hurt);
+        if (flyeye.col != null) flyeye.col.enabled = false;
     }
 
     public void Update()
@@ -38,6 +39,6 @@ public class HurtState_FlyEye : IState_Enemy
 
     public void Exit()
     {
-
+        if (flyeye.col != null) flyeye.col.enabled = true;
     }
 }
