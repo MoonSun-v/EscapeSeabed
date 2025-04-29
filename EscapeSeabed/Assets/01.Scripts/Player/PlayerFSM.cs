@@ -229,6 +229,11 @@ public class PlayerFSM : MonoBehaviour
         {
             ChangeState(new HurtState_Player(this));
         }
+
+        if (collision.gameObject.CompareTag("Lava"))
+        {
+            ChangeState(new HurtState_Player(this));
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)

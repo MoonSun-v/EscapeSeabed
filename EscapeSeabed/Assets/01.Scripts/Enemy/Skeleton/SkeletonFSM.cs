@@ -13,6 +13,7 @@ public class SkeletonFSM : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed = 0.5f;
     public float lastFlipXPos;
+    public float moveDistanceThreshold = 4.0f; // 이동 거리 임계치  
 
     public enum SkeletonState { Idle, Walking, Hurt }
 

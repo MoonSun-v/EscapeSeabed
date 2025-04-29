@@ -4,7 +4,7 @@ using UnityEngine;
 public class WalkState_Skeleton : IState_Enemy
 {
     private SkeletonFSM skeleton;
-    public float moveDistanceThreshold = 4.0f; // 이동 거리 임계치  
+    
 
     public WalkState_Skeleton(SkeletonFSM skeleton)
     {
@@ -20,7 +20,7 @@ public class WalkState_Skeleton : IState_Enemy
 
     public void Update()
     {
-        if (skeleton.DistanceMove() >= moveDistanceThreshold)
+        if (skeleton.DistanceMove() >= skeleton.moveDistanceThreshold)
         {
             // 거리 도달했으면 idle로 전환 (이제 idle에서 방향 전환함!)
             skeleton.ChangeState(new IdleState_Skeleton(skeleton));

@@ -30,6 +30,11 @@ public class HurtState_Player : IState_Player
     {
         timer += Time.deltaTime;
 
+        if(DataManager.instance.playerdata.HeartCount<=0 )
+        {
+            Debug.Log("게임 오버");
+        }
+
         if (timer >= hurtDuration)
         {
             player.ChangeState(new IdleState_Player(player)); 

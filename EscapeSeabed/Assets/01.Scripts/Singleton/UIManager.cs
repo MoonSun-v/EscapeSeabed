@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager instance;   // ΩÃ±€≈Ê
+
     public List<Image> heartImages;   // 3∞≥
     public List<Image> attackImages;  // 6∞≥
 
@@ -18,6 +20,22 @@ public class UIManager : MonoBehaviour
     private int previousAttackCount = -1;
 
     Color darkGray = new Color(0.3f, 0.3f, 0.3f, 1f);
+
+    private void Awake()
+    {
+        // ΩÃ±€≈Ê¿∏∑Œ ∞¸∏Æ
+        #region ΩÃ±€≈Ê
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(instance.gameObject);
+        }
+        DontDestroyOnLoad(this.gameObject);
+        #endregion
+    }
 
     void Update()
     {
