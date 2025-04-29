@@ -62,7 +62,6 @@ public class PlayerFSM : MonoBehaviour
 
         Move();
 
-        // Debug.Log("IsAeriaGrounded() : " + IsAeriaGrounded());
     }
 
     void FixedUpdate() // 리지드바디 연산 

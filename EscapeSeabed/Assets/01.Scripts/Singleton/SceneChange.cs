@@ -52,10 +52,13 @@ public class SceneChange : MonoBehaviour
                 SceneManager.LoadScene("06.Stage5");
                 break;
             case "06.Stage5":
-                SceneManager.LoadScene("07.Ending");
+                SceneManager.LoadScene("07.GameClear");
                 break;
-
         }
+    }
 
+    public void LoadOverScene()
+    {
+        SceneManager.LoadScene("08.GameOver");
     }
 }

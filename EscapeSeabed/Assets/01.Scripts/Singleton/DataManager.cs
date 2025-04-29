@@ -30,11 +30,6 @@ public class DataManager : MonoBehaviour
         playerdata.HeartCount = 3;
         playerdata.AttackCount = 0;
     }
-
-    void Update()
-    {
-        
-    }
 }
 
 public class PlayerData

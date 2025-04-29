@@ -33,6 +33,7 @@ public class HurtState_Player : IState_Player
         if(DataManager.instance.playerdata.HeartCount<=0 )
         {
             Debug.Log("게임 오버");
+            SceneChange.instance.LoadOverScene();
         }
 
         if (timer >= hurtDuration)
