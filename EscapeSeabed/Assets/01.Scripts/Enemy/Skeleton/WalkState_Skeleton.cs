@@ -22,7 +22,7 @@ public class WalkState_Skeleton : IState_Enemy
     {
         if (skeleton.DistanceMove() >= skeleton.moveDistanceThreshold)
         {
-            // 거리 도달했으면 idle로 전환 (이제 idle에서 방향 전환함!)
+            // 거리 도달했으면 idle로 전환
             skeleton.ChangeState(new IdleState_Skeleton(skeleton));
         }
     }

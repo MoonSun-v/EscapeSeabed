@@ -51,6 +51,10 @@ public class SceneChange : MonoBehaviour
             case "05.Stage4":
                 SceneManager.LoadScene("06.Stage5");
                 break;
+            case "06.Stage5":
+                SceneManager.LoadScene("07.Ending");
+                break;
+
         }
 
     }
