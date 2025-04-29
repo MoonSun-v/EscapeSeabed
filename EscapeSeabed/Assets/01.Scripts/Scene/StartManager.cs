@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class StartManager : MonoBehaviour
 {
     public GameObject player;
+    public GameObject electric;
     PlayerFSM PlayerFSM;
 
     private void Start()
@@ -24,8 +25,9 @@ public class StartManager : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            OnElectric();
             HandleStartTrigger();
-
+            
             StartCoroutine(NextScene());
         }
     }
@@ -51,5 +53,10 @@ public class StartManager : MonoBehaviour
         }
 
         PlayerFSM.CollisionOff();
+    }
+
+    void OnElectric()
+    {
+        electric.SetActive(true);
     }
 }
