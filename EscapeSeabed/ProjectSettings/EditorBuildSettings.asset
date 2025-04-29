@@ -20,4 +20,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/00.Scenes/04.Stage3.unity
     guid: adfcc4bb0c4d97249a1ba3f511705c88
+  - enabled: 1
+    path: Assets/00.Scenes/05.Stage4.unity
+    guid: 1379b59be03985c419390533b5697fbe
+  - enabled: 1
+    path: Assets/00.Scenes/06.Stage5.unity
+    guid: ceb37451b94923e4abccfefc9263acc6
+  - enabled: 1
+    path: Assets/00.Scenes/07.GameClear.unity
+    guid: 34426a7c1091da84fb5486d9a000b224
+  - enabled: 1
+    path: Assets/00.Scenes/08.GameOver.unity
+    guid: 6445edada032674459a9aedcf4bc4457
   m_configObjects: {}

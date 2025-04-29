@@ -61,4 +61,9 @@ public class SceneChange : MonoBehaviour
     {
         SceneManager.LoadScene("08.GameOver");
     }
+
+    public void LoadStartScene()
+    {
+        SceneManager.LoadScene("00.Start");
+    }
 }

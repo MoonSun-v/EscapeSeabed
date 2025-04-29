@@ -11,6 +11,10 @@ public class StartManager : MonoBehaviour
     private void Start()
     {
         PlayerFSM = player.GetComponent<PlayerFSM>();
+
+        // 데이터 초기화 
+        DataManager.instance.playerdata.HeartCount = 3;
+        DataManager.instance.playerdata.AttackCount = 0;
     }
 
     void OnTriggerEnter2D(Collider2D other)

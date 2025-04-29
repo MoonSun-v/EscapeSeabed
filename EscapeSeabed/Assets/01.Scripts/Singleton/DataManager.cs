@@ -26,7 +26,7 @@ public class DataManager : MonoBehaviour
 
     void Start()
     {
-        // 초기화 
+        // 데이터 초기화 
         playerdata.HeartCount = 3;
         playerdata.AttackCount = 0;
     }
