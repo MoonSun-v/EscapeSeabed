@@ -19,7 +19,7 @@ public class ShootState_Lizard : IState_Enemy
 
     public void Enter()
     {
-        Debug.Log("Lizard_Shoot");
+        // Debug.Log("Lizard_Shoot");
 
         lizard.SetActiveState(LizardFSM.LizardState.Shooting);
         

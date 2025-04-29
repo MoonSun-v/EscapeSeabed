@@ -15,7 +15,7 @@ public class HurtState_Skeleton : IState_Enemy
 
     public void Enter()
     {
-        Debug.Log("Skeleton_Hurt");
+        // Debug.Log("Skeleton_Hurt");
         skeleton.StopMoving();
         skeleton.SetActiveState(SkeletonFSM.SkeletonState.Hurt);
     }

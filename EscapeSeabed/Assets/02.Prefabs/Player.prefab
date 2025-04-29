@@ -197,6 +197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
+  moveX: 0
   moveSpeed: 5
   jumpForce: 12
   fallForce: 8
@@ -217,6 +218,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   isAtLadderTop: 0
+  isInvincible: 0
+  invincibleTime: 3
+  spriteRenderer: {fileID: 7230924441250686068}
 --- !u!1 &7453992968392581611
 GameObject:
   m_ObjectHideFlags: 0

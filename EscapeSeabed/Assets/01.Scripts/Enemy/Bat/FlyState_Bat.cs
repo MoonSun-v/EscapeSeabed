@@ -15,7 +15,7 @@ public class FlyState_Bat : IState_Enemy
 
     public void Enter()
     {
-        Debug.Log("Bat_Fly");
+        // Debug.Log("Bat_Fly");
         bat.SetActiveState(BatFSM.BatState.Fly);
     }
 

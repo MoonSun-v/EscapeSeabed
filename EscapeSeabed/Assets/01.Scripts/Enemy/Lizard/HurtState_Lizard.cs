@@ -16,7 +16,7 @@ public class HurtState_Lizard : IState_Enemy
 
     public void Enter()
     {
-        Debug.Log("Lizard_Hurt");
+        // Debug.Log("Lizard_Hurt");
         lizard.SetActiveState(LizardFSM.LizardState.Hurt);
     }
 

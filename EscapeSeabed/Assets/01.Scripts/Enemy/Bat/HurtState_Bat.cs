@@ -16,7 +16,7 @@ public class HurtState_Bat : IState_Enemy
 
     public void Enter()
     {
-        Debug.Log("Bat_Hurt");
+        // Debug.Log("Bat_Hurt");
         bat.StopMoving();
         bat.SetActiveState(BatFSM.BatState.Hurt);
     }

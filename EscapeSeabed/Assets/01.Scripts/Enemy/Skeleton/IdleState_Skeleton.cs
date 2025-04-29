@@ -14,7 +14,7 @@ public class IdleState_Skeleton : IState_Enemy
 
     public void Enter()
     {
-        Debug.Log("Skeleton_Idle");
+        // Debug.Log("Skeleton_Idle");
         elapsedTime = 0f;
         skeleton.StopMoving();
         skeleton.SetActiveState(SkeletonFSM.SkeletonState.Idle);

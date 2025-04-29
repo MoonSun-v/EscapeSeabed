@@ -12,6 +12,7 @@ public class PlayerFSM : MonoBehaviour
     private Collider2D col;
 
     [Header("Movement")]
+    public float moveX = 0f; 
     public float moveSpeed = 5f;
     public float jumpForce = 12f;
     public float fallForce = 8f;
@@ -33,9 +34,16 @@ public class PlayerFSM : MonoBehaviour
     public LayerMask ladderLayer;
     public bool isAtLadderTop = false;
 
-    public float moveX = 0f; // 좌우 
     private float minX, maxX; // 카메라 경계
     private float wall_distance = 0.4f;
+
+    [Header("Invincibility")]
+    public bool isInvincible = false;
+    private float invincibleTime = 4.0f; // 무적 유지 시간
+    private float invincibleTimer = 0f;
+    private Coroutine blinkCoroutine;
+    public SpriteRenderer spriteRenderer; // 깜빡임 처리용
+
 
     public enum PlayerState { Idle, Running, Jumping, Shooting, RunShooting, Hurt, Climbing }
 
@@ -57,12 +65,15 @@ public class PlayerFSM : MonoBehaviour
 
     void Update() // 키 입력 
     {
+        HandleInvincibility();
+
         currentState?.HandleInput();
         currentState?.Update();
 
         Move();
 
     }
+    
 
     void FixedUpdate() // 리지드바디 연산 
     {
@@ -179,11 +190,9 @@ public class PlayerFSM : MonoBehaviour
     {
         if (IsTouchingLadder() && IsGroundingLadder()) return false;
 
-        // 왼발과 오른발 위치에서 각각 땅 체크
         bool isLeftFootOnGround = Physics2D.OverlapCircle(groundCheckLeft.position, groundCheckRadius, groundLayer);
         bool isRightFootOnGround = Physics2D.OverlapCircle(groundCheckRight.position, groundCheckRadius, groundLayer);
 
-        // 왼발이나 오른발이 땅에 닿으면 땅 위로 간주
         return isLeftFootOnGround || isRightFootOnGround;
 
     }
@@ -195,11 +204,9 @@ public class PlayerFSM : MonoBehaviour
 
         Vector2 direction = Vector2.right * Mathf.Sign(transform.localScale.x);
 
-        // 레이 시작 위치들 (몸통 위/아래)
         Vector2 originLower = new Vector2(transform.position.x, transform.position.y - 0.57f);
         Vector2 originUpper = new Vector2(transform.position.x, transform.position.y + 0.4f);
 
-        // 둘 중 하나라도 벽에 닿으면 true
         bool hitLower = Physics2D.Raycast(originLower, direction, wall_distance, groundLayer);
         bool hitUpper = Physics2D.Raycast(originUpper, direction, wall_distance, groundLayer);
 
@@ -213,17 +220,19 @@ public class PlayerFSM : MonoBehaviour
     }
     public bool IsGroundingLadder()
     {
-        // 왼발과 오른발 위치에서 각각 땅 체크
         bool isLeftFootOnGround = Physics2D.OverlapCircle(groundCheckLeft.position, ladderCheckRadius, ladderLayer);
         bool isRightFootOnGround = Physics2D.OverlapCircle(groundCheckRight.position, ladderCheckRadius, ladderLayer);
 
-        // 왼발이나 오른발이 땅에 닿으면 땅 위로 간주
         return isLeftFootOnGround || isRightFootOnGround;
     }
 
-    // [ 충돌 체크 ]
+
+    // [ 충돌 관련 ]
+
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if (isInvincible) return; // 무적이면 충돌 무시
+
         if (collision.gameObject.CompareTag("Monster"))
         {
             ChangeState(new HurtState_Player(this));
@@ -237,6 +246,8 @@ public class PlayerFSM : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (isInvincible) return; // 무적이면 충돌 무시
+
         if (other.gameObject.CompareTag("FireBall"))
         {
             ChangeState(new HurtState_Player(this));
@@ -265,11 +276,69 @@ public class PlayerFSM : MonoBehaviour
         }
     }
 
-    
-
     public void CollisionOff()
     {
         if (col != null) col.enabled = false;
     }
 
+
+
+    // [ 무적 상태 관련 ]
+    private void HandleInvincibility()
+    {
+        if (isInvincible)
+        {
+            invincibleTimer += Time.deltaTime;
+
+            if (invincibleTimer >= invincibleTime)
+            {
+                isInvincible = false;
+                invincibleTimer = 0f;
+
+                // 깜빡임 멈추고 색 복구
+                if (blinkCoroutine != null)
+                {
+                    StopCoroutine(blinkCoroutine);
+                    blinkCoroutine = null;
+                }
+
+                spriteRenderer.color = new Color(1, 1, 1, 1); // 투명도 복구
+            }
+        }
+    }
+
+    public void StartInvincibility()
+    {
+        if (!isInvincible)
+        {
+            isInvincible = true;
+            Debug.Log("무적 시작");
+            StartCoroutine(Blinking());
+        }
+    }
+
+    private IEnumerator Blinking()
+    {
+        float duration = 3f; // 총 무적 시간
+        float blinkInterval = 0.2f; // 깜빡이는 주기
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            Color color = spriteRenderer.color;
+            color.a = (color.a == 1f) ? 0.3f : 1f;
+            spriteRenderer.color = color;
+
+            yield return new WaitForSeconds(blinkInterval);
+            timer += blinkInterval;
+        }
+
+        // 무적 해제 및 알파 복구
+        Color finalColor = spriteRenderer.color;
+        finalColor.a = 1f;
+        spriteRenderer.color = finalColor;
+
+        isInvincible = false;
+        Debug.Log("무적 해제");
+    }
 }

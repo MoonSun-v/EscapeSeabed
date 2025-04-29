@@ -16,7 +16,7 @@ public class HurtState_FlyEye : IState_Enemy
 
     public void Enter()
     {
-        Debug.Log("FlyEye_Hurt");
+        // Debug.Log("FlyEye_Hurt");
         flyeye.StopMoving();
         flyeye.SetActiveState(FlyEyeFSM.FlyEyeState.Hurt);
     }

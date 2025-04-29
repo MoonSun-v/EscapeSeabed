@@ -15,7 +15,7 @@ public class FlyState_FlyEye : IState_Enemy
 
     public void Enter()
     {
-        Debug.Log("FlyEye_Fly");
+        // Debug.Log("FlyEye_Fly");
         flyeye.SetActiveState(FlyEyeFSM.FlyEyeState.Fly);
     }
 

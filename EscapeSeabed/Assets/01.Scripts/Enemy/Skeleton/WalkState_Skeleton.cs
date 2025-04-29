@@ -14,7 +14,7 @@ public class WalkState_Skeleton : IState_Enemy
     public void Enter()
     {
         skeleton.lastFlipXPos = skeleton.transform.position.x;
-        Debug.Log("Skeleton_Walk");
+        // Debug.Log("Skeleton_Walk");
         skeleton.SetActiveState(SkeletonFSM.SkeletonState.Walking);
     }
 

@@ -15,6 +15,9 @@ public class StartManager : MonoBehaviour
         // 데이터 초기화 
         DataManager.instance.playerdata.HeartCount = 3;
         DataManager.instance.playerdata.AttackCount = 0;
+
+        Debug.Log("게임을 시작합니다.");
+        Debug.Log("Heart = " + DataManager.instance.playerdata.HeartCount + "Attack = " + DataManager.instance.playerdata.AttackCount);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -29,7 +32,7 @@ public class StartManager : MonoBehaviour
 
     IEnumerator NextScene()
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.5f);
 
         SceneChange.instance.LoadNextScene();
     }

@@ -18,7 +18,11 @@ public class HurtState_Player : IState_Player
     {
         player.SetActiveState(PlayerFSM.PlayerState.Hurt);
         DataManager.instance.playerdata.HeartCount--;
+        Debug.Log("HeartCount = " + DataManager.instance.playerdata.HeartCount);
         timer = 0f;
+
+        // 무적 시작 (상태는 곧 끝나지만 무적은 계속됨)
+        player.StartInvincibility();
     }
 
     public void HandleInput()
@@ -32,7 +36,6 @@ public class HurtState_Player : IState_Player
 
         if(DataManager.instance.playerdata.HeartCount<=0 )
         {
-            Debug.Log("게임 오버");
             SceneChange.instance.LoadOverScene();
         }
 
