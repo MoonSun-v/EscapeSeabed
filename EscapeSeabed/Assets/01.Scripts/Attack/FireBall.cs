@@ -23,7 +23,7 @@ public class FireBall : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("FireBall이 플레이어에게 타격을 입혔습니다!");
+            // Debug.Log("FireBall이 플레이어에게 타격을 입혔습니다!");
 
             Stop();
             animator.SetTrigger("FireBallBombTrigger");

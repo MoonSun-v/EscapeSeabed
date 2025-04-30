@@ -23,7 +23,7 @@ public class Bullet : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Monster"))
         {
-            Debug.Log("Bullet이 몬스터에 타격을 입혔습니다!");
+            // Debug.Log("Bullet이 몬스터에 타격을 입혔습니다!");
 
             Stop();
             animator.SetTrigger("BulletBombTrigger");
